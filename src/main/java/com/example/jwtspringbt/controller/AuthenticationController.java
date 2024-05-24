@@ -28,6 +28,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody User request
     ) {
-        return ResponseEntity.ok((AuthenticationResponse) authService.authenticate(request));
+        // Panggil metode authenticate dengan parameter yang sesuai
+        return ResponseEntity.ok(authService.authenticate(request.getUsername(), request.getPassword()));
     }
 }

@@ -9,6 +9,8 @@ public class AuthenticationResponse {
         this.message = message;
     }
 
+
+
     public String getToken() {
         return token;
     }

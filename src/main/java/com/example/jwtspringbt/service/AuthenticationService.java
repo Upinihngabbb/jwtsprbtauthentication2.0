@@ -7,6 +7,7 @@ import com.example.jwtspringbt.repository.TokenRepository;
 import com.example.jwtspringbt.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +66,7 @@ public class AuthenticationService {
             userOpt = repository.findByEmail(identifier);
         }
 
-        User user = userOpt.orElseThrow();
+        User user = userOpt.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -100,7 +101,8 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public Object authenticate(User request) {
-        return null;
-    }
+    // Hapus method duplikat
+    // public Object authenticate(User request) {
+    //     return null;
+    // }
 }

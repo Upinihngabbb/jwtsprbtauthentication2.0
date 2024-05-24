@@ -1,6 +1,7 @@
 package com.example.jwtspringbt.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +18,7 @@ public class Token {
 
     @Column(name = "is_logged_out")
     private boolean loggedOut;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
