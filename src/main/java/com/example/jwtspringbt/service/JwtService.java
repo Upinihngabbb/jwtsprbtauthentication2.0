@@ -12,7 +12,6 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-
     private final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c";
 
     public String extractUsername(String token) {
@@ -42,15 +41,20 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        // Buat token JWT menggunakan jjwt
-        String token = Jwts.builder()
-                .setSubject(userDetails.getUsername()) // Atur subyek token sebagai username pengguna
-                .setIssuedAt(new Date()) // Atur waktu token dikeluarkan
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Atur waktu kadaluarsa token (contohnya, 10 jam dari sekarang)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // Tanda tangani token dengan kunci rahasia
-                .compact(); // Kompresi token menjadi string
-
-        return token; // Kembalikan token JWT yang telah dibuat
+        return createToken(userDetails.getUsername());
     }
 
+    private String createToken(String subject) {
+        // Mengatur masa berlaku token menjadi 1 bulan (sekitar 30 hari)
+        long expirationTime = 1000L * 60 * 60 * 24 * 30; // 30 hari
+        Date issuedDate = new Date();
+        Date expirationDate = new Date(issuedDate.getTime() + expirationTime);
+
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(issuedDate)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
 }

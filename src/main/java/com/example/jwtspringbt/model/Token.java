@@ -18,7 +18,6 @@ public class Token {
 
     @Column(name = "is_logged_out")
     private boolean loggedOut;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
