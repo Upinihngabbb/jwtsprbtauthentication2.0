@@ -1,7 +1,6 @@
 package com.example.jwtspringbt.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity

@@ -7,16 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "tbl_stok")
 @Entity
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "tbl_barang")
-public class Barang {
+public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String nama;
-    private String category;
-    private Double berat;
+    private Long barangId;
+    private Integer stok;
 }

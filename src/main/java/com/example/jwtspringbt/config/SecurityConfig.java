@@ -3,6 +3,8 @@ package com.example.jwtspringbt.config;
 import com.example.jwtspringbt.filter.JwtAuthenticationFilter;
 import com.example.jwtspringbt.service.UserDetailsServiceImp;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,7 @@ public class SecurityConfig {
     private final UserDetailsServiceImp userDetailsServiceImp;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomLogoutHandler logoutHandler;
+    private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp,
                           JwtAuthenticationFilter jwtAuthenticationFilter,
@@ -37,14 +40,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+        logger.debug("Configuring security filter chain");
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/login/**", "/api/register/**").permitAll()
-                        .requestMatchers("/api/users/**").hasAuthority("ADMIN")
                         .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/tutorials/**").authenticated() // Mengizinkan akses hanya untuk pengguna yang sudah autentik
+                        .requestMatchers("/api/tutorials/**", "/refresh_token/**", "/api/BarangController/**", "/api/ShipperController/**", "/api/StockController/**").authenticated() // Mengizinkan akses hanya untuk pengguna yang sudah autentik
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsServiceImp)

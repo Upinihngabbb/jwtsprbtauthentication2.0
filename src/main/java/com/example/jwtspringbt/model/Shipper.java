@@ -2,21 +2,20 @@ package com.example.jwtspringbt.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
-@Builder
-@NoArgsConstructor
+@Table(name = "tbl_shipper")
+@Data
 @AllArgsConstructor
-@Table(name = "tbl_barang")
-public class Barang {
+@NoArgsConstructor
+public class Shipper {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String nama;
-    private String category;
-    private Double berat;
+
+    private String codeShipper;
 }

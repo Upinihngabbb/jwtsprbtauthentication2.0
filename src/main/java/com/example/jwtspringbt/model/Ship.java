@@ -6,17 +6,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 @Data
 @Entity
+@Table(name = "tbl_ship")
+@AllArgsConstructor
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "tbl_barang")
-public class Barang {
+public class Ship {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String nama;
-    private String category;
-    private Double berat;
+    private Long barangId;
+    private Long shipperId;
+    private Integer stok;
+    private String tipe;
+    private Date tanggal;
 }
