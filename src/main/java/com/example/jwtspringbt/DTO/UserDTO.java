@@ -1,6 +1,6 @@
 package com.example.jwtspringbt.DTO;
 
-import com.example.jwtspringbt.model.Role;
+
 import com.example.jwtspringbt.model.User;
 
 import java.time.format.DateTimeFormatter;
@@ -11,25 +11,26 @@ public class UserDTO {
     private String lastName;
     private String username;
     private String email;
-    private String role;
-    private String createdAt; // Change createdAt to String
+    private String password; // Tambahkan field password
+
+    private String createdAt;
 
     // Default constructor
     public UserDTO() {
     }
 
     // All-args constructor
-    public UserDTO(Integer id, String firstName, String lastName, String username, String email, String role, String createdAt) {
+    public UserDTO(Integer id, String firstName, String lastName, String username, String email, String password, String createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.role = role;
+        this.password = password; // Tambahkan password ke konstruktor
+
         this.createdAt = createdAt;
     }
 
-    // Getters and setters
     public Integer getId() {
         return id;
     }
@@ -70,13 +71,16 @@ public class UserDTO {
         this.email = email;
     }
 
-    public Role getRole() {
-        return Role.valueOf(role);
+    public String getPassword() {
+        return password;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setPassword(String password) {
+        this.password = password;
     }
+
+
+
 
     public String getCreatedAt() {
         return createdAt;
@@ -94,7 +98,8 @@ public class UserDTO {
                 user.getLastName(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getRole().name(),
+                user.getPassword(), // Ambil password dari User
+
                 user.getCreatedAt() != null ? user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) : null
         );
     }

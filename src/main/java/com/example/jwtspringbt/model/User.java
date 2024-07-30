@@ -2,7 +2,7 @@ package com.example.jwtspringbt.model;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -33,8 +33,6 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -81,8 +79,14 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
-        return password;
+        return this.password
+                ;
     }
 
     public void setPassword(String password) {
@@ -97,13 +101,8 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
-    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -121,10 +120,6 @@ public class User implements UserDetails {
         this.tokens = tokens;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -11,7 +11,7 @@ public class BarangStockData {
     private Long id;
     private String nama;
     private String category;
-    private Double berat; // Mengubah tipe data berat menjadi Double
-
+    private Double berat;
+    private String unit; // Added unit field
     private Integer stok;
 }

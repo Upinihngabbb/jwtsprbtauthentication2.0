@@ -20,6 +20,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -42,11 +49,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         logger.debug("Configuring security filter chain");
         return http
+                .cors(withDefaults()) // Enable CORS
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/login/**", "/api/register/**").permitAll()
                         .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/tutorials/**", "/refresh_token/**", "/api/BarangController/**", "/api/ShipperController/**", "/api/StockController/**").authenticated() // Mengizinkan akses hanya untuk pengguna yang sudah autentik
+                        .requestMatchers("/api/users/**").authenticated()  // Ensure /api/users/** endpoints are authenticated
+                        .requestMatchers("/api/tutorials/**", "/refresh_token/**", "/api/BarangController/**", "/api/ShipperController/**", "/api/StockController/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsServiceImp)
@@ -61,6 +70,18 @@ public class SecurityConfig {
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()))
                 .build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:8080")); // Allow your front-end domain
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

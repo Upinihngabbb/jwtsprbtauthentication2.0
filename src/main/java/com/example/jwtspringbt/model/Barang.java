@@ -19,4 +19,5 @@ public class Barang {
     private String nama;
     private String category;
     private Double berat;
+    private String unit; // Added unit field
 }

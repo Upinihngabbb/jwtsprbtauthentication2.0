@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public interface BarangRepository extends JpaRepository<Barang, Long> {
 
-    @Query("SELECT new com.example.jwtspringbt.DTO.BarangStockData(b.id, b.nama, b.category, b.berat, s.stok) " +
+    @Query("SELECT new com.example.jwtspringbt.DTO.BarangStockData(b.id, b.nama, b.category, b.berat, b.unit, s.stok) " +
             "FROM Barang b INNER JOIN Stock s ON s.barangId = b.id")
     List<BarangStockData> barangAllWithStock();
 }
